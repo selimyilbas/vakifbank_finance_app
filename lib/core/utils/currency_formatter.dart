@@ -10,19 +10,14 @@ class CurrencyFormatter {
   }
 
   static String _getCurrencySymbol(String code) {
-    switch (code) {
-      case 'USD':
-        return '\$';
-      case 'EUR':
-        return '€';
-      case 'TRY':
-        return '₺';
-      case 'GBP':
-        return '£';
-      case 'JPY':
-        return '¥';
-      default:
-        return code;
-    }
+    final symbols = {
+      'USD': '\$', 'EUR': '€', 'TRY': '₺', 'GBP': '£', 'JPY': '¥',
+      'CHF': 'CHF', 'CAD': 'C\$', 'AUD': 'A\$', 'CNY': '¥', 'HKD': 'HK\$',
+      'NZD': 'NZ\$', 'SEK': 'kr', 'KRW': '₩', 'SGD': 'S\$', 'NOK': 'kr',
+      'MXN': 'Mex\$', 'INR': '₹', 'RUB': '₽', 'ZAR': 'R', 'BRL': 'R\$',
+      'AED': 'د.إ', 'SAR': 'ر.س', 'PLN': 'zł', 'THB': '฿', 'IDR': 'Rp',
+      'HUF': 'Ft', 'CZK': 'Kč', 'ILS': '₪', 'CLP': 'CLP\$', 'PHP': '₱'
+    };
+    return symbols[code] ?? code;
   }
 }

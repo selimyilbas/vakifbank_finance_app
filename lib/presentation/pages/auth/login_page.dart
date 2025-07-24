@@ -43,6 +43,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
@@ -75,23 +76,31 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-//                    Image.asset(
-//                      'assets/images/logo.png',
-//                      height: 120,
-//                      errorBuilder: (context, error, stackTrace) {
-//                        return const Icon(
-//                          Icons.account_balance,
-//                          size: 120,
-//                          color: Colors.blue,
-//                        );
-//                      },
-//                    ),
+                    // Logo Container
+                    Container(
+                      width: 220,
+                      height: 220,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFDB913),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                          'assets/images/Vakiflogo.jpg',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 24),
                     Text(
                       AppConstants.appName,
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium
+                          ?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue[900],
+                            color: Colors.black,
                           ),
                     ),
                     const SizedBox(height: 48),
@@ -143,10 +152,16 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => const RegisterPage()),
+                          MaterialPageRoute(
+                              builder: (_) => const RegisterPage()),
                         );
                       },
-                      child: const Text('Don\'t have an account? Register'),
+                      child: const Text(
+                        'Don\'t have an account? Register',
+                        style: TextStyle(
+                          color: Colors.black87,
+                        ),
+                      ),
                     ),
                   ],
                 ),

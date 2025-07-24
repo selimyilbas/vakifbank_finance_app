@@ -81,6 +81,18 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
     }
   }
 
+  String _getCurrencySymbol(String code) {
+    final symbols = {
+      'USD': '\$', 'EUR': '€', 'TRY': '₺', 'GBP': '£', 'JPY': '¥',
+      'CHF': 'CHF', 'CAD': 'C\$', 'AUD': 'A\$', 'CNY': '¥', 'HKD': 'HK\$',
+      'NZD': 'NZ\$', 'SEK': 'kr', 'KRW': '₩', 'SGD': 'S\$', 'NOK': 'kr',
+      'MXN': 'Mex\$', 'INR': '₹', 'RUB': '₽', 'ZAR': 'R', 'BRL': 'R\$',
+      'AED': 'د.إ', 'SAR': 'ر.س', 'PLN': 'zł', 'THB': '฿', 'IDR': 'Rp',
+      'HUF': 'Ft', 'CZK': 'Kč', 'ILS': '₪', 'CLP': 'CLP\$', 'PHP': '₱'
+    };
+    return symbols[code] ?? code;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +119,7 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
                       keyboardType: const TextInputType.numberWithOptions(decimal: true),
                       decoration: InputDecoration(
                         labelText: 'Amount',
-                        prefixText: CurrencyFormatter.format(0, _fromCurrency).substring(0, 1),
+                        prefixText: _getCurrencySymbol(_fromCurrency) + ' ',
                         border: const OutlineInputBorder(),
                       ),
                     ),
@@ -117,6 +129,7 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
                         Expanded(
                           child: DropdownButtonFormField<String>(
                             value: _fromCurrency,
+                            isExpanded: true,
                             decoration: const InputDecoration(
                               labelText: 'From',
                               border: OutlineInputBorder(),
@@ -141,6 +154,7 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
                         Expanded(
                           child: DropdownButtonFormField<String>(
                             value: _toCurrency,
+                            isExpanded: true,
                             decoration: const InputDecoration(
                               labelText: 'To',
                               border: OutlineInputBorder(),
@@ -229,7 +243,8 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
                 if (state is CurrencyLoading) {
                   return const LoadingWidget(message: 'Loading exchange rates...');
                 } else if (state is CurrencyRatesLoaded) {
-                  final amount = double.tryParse(_amountController.text) ?? 100;
+                  // Changed from 100 to 1 for base amount
+                  final amount = double.tryParse(_amountController.text) ?? 1;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -238,14 +253,19 @@ class _CurrencyConverterPageState extends State<CurrencyConverterPage> {
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(height: 16),
-                      ...state.currencies
-                          .where((currency) => 
-                              AppConstants.supportedCurrencies.contains(currency.code))
-                          .map((currency) => CurrencyCard(
-                                currency: currency,
-                                amount: amount,
-                              ))
-                          .toList(),
+                      SizedBox(
+                        height: 400, // Fixed height for scrollable area
+                        child: ListView(
+                          children: state.currencies
+                              .where((currency) => 
+                                  AppConstants.supportedCurrencies.contains(currency.code))
+                              .map((currency) => CurrencyCard(
+                                    currency: currency,
+                                    amount: amount,
+                                  ))
+                              .toList(),
+                        ),
+                      ),
                     ],
                   );
                 }

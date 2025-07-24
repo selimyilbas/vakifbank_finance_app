@@ -4,6 +4,8 @@ import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/auth/auth_event.dart';
 import '../../bloc/auth/auth_state.dart';
 import 'currency_converter_page.dart';
+import 'exchange_rates_page.dart';
+import 'transaction_history_page.dart';
 import '../auth/login_page.dart';
 
 class CustomerHomePage extends StatelessWidget {
@@ -22,6 +24,7 @@ class CustomerHomePage extends StatelessWidget {
         }
       },
       child: Scaffold(
+        backgroundColor: Colors.grey[50],
         appBar: AppBar(
           title: const Text('Vakıfbank Finance'),
           actions: [
@@ -41,23 +44,33 @@ class CustomerHomePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Welcome, ${state.user.name}!',
-                              style: Theme.of(context).textTheme.headlineSmall,
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFDB913),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Welcome, ${state.user.name}!',
+                            style: const TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Email: ${state.user.email}',
-                              style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Email: ${state.user.email}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -79,7 +92,6 @@ class CustomerHomePage extends StatelessWidget {
                           context,
                           'Currency Converter',
                           Icons.currency_exchange,
-                          Colors.blue,
                           () {
                             Navigator.push(
                               context,
@@ -93,12 +105,11 @@ class CustomerHomePage extends StatelessWidget {
                           context,
                           'Exchange Rates',
                           Icons.trending_up,
-                          Colors.green,
                           () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => const CurrencyConverterPage(),
+                                builder: (_) => const ExchangeRatesPage(),
                               ),
                             );
                           },
@@ -107,18 +118,25 @@ class CustomerHomePage extends StatelessWidget {
                           context,
                           'Transaction History',
                           Icons.history,
-                          Colors.orange,
                           () {
-                            // Navigate to transaction history
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const TransactionHistoryPage(),
+                              ),
+                            );
                           },
                         ),
                         _buildServiceCard(
                           context,
                           'Settings',
                           Icons.settings,
-                          Colors.purple,
                           () {
-                            // Navigate to settings
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Settings page coming soon!'),
+                              ),
+                            );
                           },
                         ),
                       ],
@@ -138,31 +156,45 @@ class CustomerHomePage extends StatelessWidget {
     BuildContext context,
     String title,
     IconData icon,
-    Color color,
     VoidCallback onTap,
   ) {
     return Card(
-      elevation: 4,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            color: Colors.white,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                icon,
-                size: 48,
-                color: color,
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFDB913).withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: Icon(
+                  icon,
+                  size: 40,
+                  color: Colors.black87,
+                ),
               ),
               const SizedBox(height: 12),
               Text(
                 title,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
               ),
             ],
           ),

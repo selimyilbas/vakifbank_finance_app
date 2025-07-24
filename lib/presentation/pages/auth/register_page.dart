@@ -19,7 +19,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  String _selectedRole = AppConstants.customerRole;
+  // Fixed to customer role only
+  final String _selectedRole = AppConstants.customerRole;
 
   @override
   void dispose() {
@@ -36,7 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
               email: _emailController.text.trim(),
               password: _passwordController.text,
               name: _nameController.text.trim(),
-              role: _selectedRole,
+              role: _selectedRole, // Always customer
             ),
           );
     }
@@ -130,34 +131,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16),
-                  DropdownButtonFormField<String>(
-                    value: _selectedRole,
-                    decoration: InputDecoration(
-                      labelText: 'Account Type',
-                      prefixIcon: const Icon(Icons.account_circle),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[100],
-                    ),
-                    items: const [
-                      DropdownMenuItem(
-                        value: AppConstants.customerRole,
-                        child: Text('Customer'),
-                      ),
-                      DropdownMenuItem(
-                        value: AppConstants.adminRole,
-                        child: Text('Admin'),
-                      ),
-                    ],
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedRole = value!;
-                      });
-                    },
-                  ),
                   const SizedBox(height: 32),
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
@@ -167,6 +140,16 @@ class _RegisterPageState extends State<RegisterPage> {
                         isLoading: state is AuthLoading,
                       );
                     },
+                  ),
+                  const SizedBox(height: 16),
+                  Center(
+                    child: Text(
+                      'You will be registered as a Customer',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 14,
+                      ),
+                    ),
                   ),
                 ],
               ),

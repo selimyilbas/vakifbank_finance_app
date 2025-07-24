@@ -39,12 +39,36 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: AppConstants.appName,
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: MaterialColor(
+            0xFFFDB913, // Vakıfbank Yellow
+            <int, Color>{
+              50: const Color(0xFFFFF8E1),
+              100: const Color(0xFFFFECB3),
+              200: const Color(0xFFFFE082),
+              300: const Color(0xFFFFD54F),
+              400: const Color(0xFFFFCA28),
+              500: const Color(0xFFFDB913), // Main color
+              600: const Color(0xFFFFB300),
+              700: const Color(0xFFFFA000),
+              800: const Color(0xFFFF8F00),
+              900: const Color(0xFFFF6F00),
+            },
+          ),
+          primaryColor: const Color(0xFFFDB913),
           visualDensity: VisualDensity.adaptivePlatformDensity,
           appBarTheme: const AppBarTheme(
             elevation: 0,
-            backgroundColor: Colors.blue,
-            foregroundColor: Colors.white,
+            backgroundColor: Color(0xFFFDB913),
+            foregroundColor: Colors.black,
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFDB913),
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
           ),
         ),
         home: BlocListener<AuthBloc, AuthState>(
