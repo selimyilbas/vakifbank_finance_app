@@ -40,14 +40,14 @@ class MyApp extends StatelessWidget {
         title: AppConstants.appName,
         theme: ThemeData(
           primarySwatch: MaterialColor(
-            0xFFFDB913, // Vakıfbank Yellow
+            0xFFFDB913, 
             <int, Color>{
               50: const Color(0xFFFFF8E1),
               100: const Color(0xFFFFECB3),
               200: const Color(0xFFFFE082),
               300: const Color(0xFFFFD54F),
               400: const Color(0xFFFFCA28),
-              500: const Color(0xFFFDB913), // Main color
+              500: const Color(0xFFFDB913), 
               600: const Color(0xFFFFB300),
               700: const Color(0xFFFFA000),
               800: const Color(0xFFFF8F00),

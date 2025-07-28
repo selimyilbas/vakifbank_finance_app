@@ -2,9 +2,19 @@ import 'package:flutter/material.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../domain/entities/currency.dart';
 
+/// Currency Card Widget
+/// 
+/// Displays currency exchange rate information in a card format.
+/// Shows currency code, exchange rate, and converted amount.
+/// Used in currency converter and exchange rates pages.
 class CurrencyCard extends StatelessWidget {
+  /// Currency entity with rate information
   final Currency currency;
+  
+  /// Base amount for conversion display
   final double amount;
+  
+  /// Optional tap callback
   final VoidCallback? onTap;
 
   const CurrencyCard({
@@ -16,6 +26,7 @@ class CurrencyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Calculate converted amount
     final convertedAmount = amount * currency.rate;
 
     return Container(
@@ -23,6 +34,7 @@ class CurrencyCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
+        // Subtle shadow for elevation effect
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -39,9 +51,11 @@ class CurrencyCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // Currency information
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Currency code
                   Text(
                     currency.code,
                     style: const TextStyle(
@@ -50,6 +64,7 @@ class CurrencyCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
+                  // Exchange rate
                   Text(
                     'Rate: ${currency.rate.toStringAsFixed(4)}',
                     style: TextStyle(
@@ -59,6 +74,7 @@ class CurrencyCard extends StatelessWidget {
                   ),
                 ],
               ),
+              // Converted amount with Vakıfbank yellow background
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(

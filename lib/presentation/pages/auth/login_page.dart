@@ -10,6 +10,11 @@ import '../customer/customer_home_page.dart';
 import '../admin/admin_home_page.dart';
 import '../../../core/constants/app_constants.dart';
 
+/// Login Page
+///
+/// Entry point of the application where users authenticate.
+/// Supports email/password login and navigation to registration.
+/// Automatically routes users based on their role after login.
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -18,17 +23,26 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  /// Form key for validation
   final _formKey = GlobalKey<FormState>();
+
+  /// Email text controller
   final _emailController = TextEditingController();
+
+  /// Password text controller
   final _passwordController = TextEditingController();
 
   @override
   void dispose() {
+    // Clean up controllers
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
+  /// Handles login form submission
+  ///
+  /// Validates form and triggers login event
   void _login() {
     if (_formKey.currentState!.validate()) {
       context.read<AuthBloc>().add(
@@ -45,8 +59,10 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: BlocListener<AuthBloc, AuthState>(
+        // Listen for authentication state changes
         listener: (context, state) {
           if (state is AuthAuthenticated) {
+            // Route based on user role
             if (state.user.role == AppConstants.adminRole) {
               Navigator.pushReplacement(
                 context,
@@ -59,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
               );
             }
           } else if (state is AuthError) {
+            // Show error message
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
@@ -76,23 +93,29 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Logo Container
+                    // App logo as a soft-cornered square
                     Container(
-                      width: 220,
-                      height: 220,
+                      width: 160,
+                      height: 160,
                       decoration: BoxDecoration(
                         color: const Color(0xFFFDB913),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(24),
                       ),
+                      alignment: Alignment.center,
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(24),
                         child: Image.asset(
                           'assets/images/Vakiflogo.jpg',
+                          width: 160,
+                          height: 160,
                           fit: BoxFit.cover,
                         ),
                       ),
                     ),
+
                     const SizedBox(height: 24),
+
+                    // App name
                     Text(
                       AppConstants.appName,
                       style: Theme.of(context)
@@ -103,7 +126,10 @@ class _LoginPageState extends State<LoginPage> {
                             color: Colors.black,
                           ),
                     ),
+
                     const SizedBox(height: 48),
+
+                    // Email input field
                     CustomTextField(
                       controller: _emailController,
                       labelText: 'Email',
@@ -120,7 +146,10 @@ class _LoginPageState extends State<LoginPage> {
                         return null;
                       },
                     ),
+
                     const SizedBox(height: 16),
+
+                    // Password input field
                     CustomTextField(
                       controller: _passwordController,
                       labelText: 'Password',
@@ -137,7 +166,10 @@ class _LoginPageState extends State<LoginPage> {
                         return null;
                       },
                     ),
+
                     const SizedBox(height: 32),
+
+                    // Login button with loading state
                     BlocBuilder<AuthBloc, AuthState>(
                       builder: (context, state) {
                         return CustomButton(
@@ -147,7 +179,10 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                     ),
+
                     const SizedBox(height: 16),
+
+                    // Registration link
                     TextButton(
                       onPressed: () {
                         Navigator.push(

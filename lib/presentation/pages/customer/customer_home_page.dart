@@ -8,14 +8,21 @@ import 'exchange_rates_page.dart';
 import 'transaction_history_page.dart';
 import '../auth/login_page.dart';
 
+/// Customer Home Page
+/// 
+/// Main dashboard for customer users showing available services.
+/// Provides navigation to currency conversion, exchange rates,
+/// transaction history, and settings.
 class CustomerHomePage extends StatelessWidget {
   const CustomerHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
+      // Listen for logout
       listener: (context, state) {
         if (state is AuthUnauthenticated) {
+          // Navigate to login on logout
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (_) => const LoginPage()),
@@ -28,6 +35,7 @@ class CustomerHomePage extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Vakıfbank Finance'),
           actions: [
+            // Logout button
             IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () {
@@ -44,6 +52,7 @@ class CustomerHomePage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Welcome card with user info
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(20),
@@ -74,6 +83,7 @@ class CustomerHomePage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 24),
+                    // Services section title
                     Text(
                       'Services',
                       style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -81,6 +91,7 @@ class CustomerHomePage extends StatelessWidget {
                           ),
                     ),
                     const SizedBox(height: 16),
+                    // Service grid
                     GridView.count(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -88,6 +99,7 @@ class CustomerHomePage extends StatelessWidget {
                       crossAxisSpacing: 16,
                       mainAxisSpacing: 16,
                       children: [
+                        // Currency converter service
                         _buildServiceCard(
                           context,
                           'Currency Converter',
@@ -101,6 +113,7 @@ class CustomerHomePage extends StatelessWidget {
                             );
                           },
                         ),
+                        // Exchange rates service
                         _buildServiceCard(
                           context,
                           'Exchange Rates',
@@ -114,6 +127,7 @@ class CustomerHomePage extends StatelessWidget {
                             );
                           },
                         ),
+                        // Transaction history service
                         _buildServiceCard(
                           context,
                           'Transaction History',
@@ -127,6 +141,7 @@ class CustomerHomePage extends StatelessWidget {
                             );
                           },
                         ),
+                        // Settings service (placeholder)
                         _buildServiceCard(
                           context,
                           'Settings',
@@ -145,6 +160,7 @@ class CustomerHomePage extends StatelessWidget {
                 ),
               );
             }
+            // Show loading while checking auth state
             return const Center(child: CircularProgressIndicator());
           },
         ),
@@ -152,6 +168,10 @@ class CustomerHomePage extends StatelessWidget {
     );
   }
 
+  /// Builds a service card widget
+  /// 
+  /// Creates a tappable card with icon and title
+  /// Uses Vakıfbank yellow accent for icon background
   Widget _buildServiceCard(
     BuildContext context,
     String title,
@@ -174,6 +194,7 @@ class CustomerHomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // Icon with yellow background
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -187,6 +208,7 @@ class CustomerHomePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
+              // Service title
               Text(
                 title,
                 textAlign: TextAlign.center,
