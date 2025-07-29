@@ -12,13 +12,17 @@ import 'presentation/pages/auth/login_page.dart';
 import 'presentation/pages/customer/customer_home_page.dart';
 import 'presentation/pages/admin/admin_home_page.dart';
 
+/// Entry point of the application.
+/// Initializes Flutter bindings, Firebase, and dependency injection container before running the app.
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await di.init();
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized(); // Ensures Flutter engine is initialized
+  await Firebase.initializeApp();          // Initialize Firebase SDK
+  await di.init();                          // Set up dependency injection (GetIt)
+  runApp(const MyApp());                   // Launch the root widget
 }
 
+/// Root widget of the application.
+/// Configures global Bloc providers and application theme.
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -26,12 +30,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        // AuthBloc checks login status and manages authentication state
         BlocProvider(
           create: (_) => di.sl<AuthBloc>()..add(AuthCheckRequested()),
         ),
+        // CurrencyBloc handles fetching and converting exchange rates
         BlocProvider(
           create: (_) => di.sl<CurrencyBloc>(),
         ),
+        // TransactionBloc manages transaction history and creation
         BlocProvider(
           create: (_) => di.sl<TransactionBloc>(),
         ),
@@ -40,14 +47,14 @@ class MyApp extends StatelessWidget {
         title: AppConstants.appName,
         theme: ThemeData(
           primarySwatch: MaterialColor(
-            0xFFFDB913, 
+            0xFFFDB913, // Custom primary color (bank theme)
             <int, Color>{
               50: const Color(0xFFFFF8E1),
               100: const Color(0xFFFFECB3),
               200: const Color(0xFFFFE082),
               300: const Color(0xFFFFD54F),
               400: const Color(0xFFFFCA28),
-              500: const Color(0xFFFDB913), 
+              500: const Color(0xFFFDB913),
               600: const Color(0xFFFFB300),
               700: const Color(0xFFFFA000),
               800: const Color(0xFFFF8F00),
@@ -71,9 +78,11 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
+        // Initial route listener for authentication changes
         home: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthAuthenticated) {
+              // Navigate based on user role: admin or customer
               if (state.user.role == AppConstants.adminRole) {
                 Navigator.pushAndRemoveUntil(
                   context,
@@ -89,7 +98,7 @@ class MyApp extends StatelessWidget {
               }
             }
           },
-          child: const LoginPage(),
+          child: const LoginPage(), // Default screen before authentication
         ),
       ),
     );
